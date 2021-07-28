@@ -130,7 +130,6 @@ namespace DiscordClients.Console.Pages
                     {
                         StdSchedulerFactory factory = new StdSchedulerFactory();
 
-                        // get a scheduler
                         IScheduler scheduler = await factory.GetScheduler();
                         await scheduler.Start();
 
@@ -157,7 +156,7 @@ namespace DiscordClients.Console.Pages
                                                                 .WithIntervalInHours(24)
                                                                 .RepeatForever())
                                                             .Build();
-                        IJobDetail leaveJob = JobBuilder.Create<ExecuteBot>()
+                        IJobDetail leaveJob = JobBuilder.Create<FinishBot>()
                         .Build();
                         leaveJob.JobDataMap.Put("LeaveBots", dic);
                         await scheduler.ScheduleJob(leaveJob, leaveTrigger);

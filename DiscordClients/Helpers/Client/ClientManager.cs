@@ -44,6 +44,11 @@ namespace DiscordClients.Helpers
             if (Client.Special) return;
             _client.ReconnectionHappened.Subscribe(type =>
                 {
+                    if (!Client.Connected)
+                    {
+                        StartClient();
+                        ConnectClient();
+                    }
                 });
             _client.DisconnectionHappened.Subscribe(info =>
                {
@@ -82,9 +87,10 @@ namespace DiscordClients.Helpers
             StartClient();
             ConnectClient();
         }
-        public void Disconnect(string id)
+        public async void Disconnect(string id)
         {
             DisconnectClient();
+            await Stop();
             Log.Information($"Disconnected {id}");
         }
         public void Heartbeat(int ms)
@@ -173,7 +179,9 @@ namespace DiscordClients.Helpers
             _client.IsReconnectionEnabled = false;
             await _client.Stop(WebSocketCloseStatus.Empty, string.Empty);
             Client.Connected = false;
+            Client.Alive = false;
             Log.Logger.Error($"Closed connexion to WebSocket ");
+
         }
         private static void InitLogging()
         {
