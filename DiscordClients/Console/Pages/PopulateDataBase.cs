@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using DiscordClients.Core.SQL.Tables;
+﻿using DiscordClients.Core.SQL.Tables;
 using DiscordClients.Helpers;
 
 using EasyConsole;
 
 using Newtonsoft.Json;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace DiscordClients.Console.Pages
 {
@@ -39,6 +40,7 @@ namespace DiscordClients.Console.Pages
             Output.WriteLine(ConsoleColor.Green, "Ожидайте...");
             List<BotsJson> Bots = JsonConvert.DeserializeObject<List<BotsJson>>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Bots.json")));
             GlobalVars.DataBase.DeleteAll<ChannelType>();
+            var cultureOfMyDates = CultureInfo.GetCultureInfo("ru");
             for (int i = 0; i < Bots.Count; i++)
             {
                 var bot = Bots.ElementAt(i);
@@ -61,8 +63,14 @@ namespace DiscordClients.Console.Pages
 
                     channel.Bots.Add(new Bot() { Token = token });
 
-                }
 
+                }
+                Output.WriteLine(ConsoleColor.Green, $@"----Добавлен:----
+                                                          Канал:{channel.Id}
+                                                          Количество ботов:{channel.Bots.Count}
+                                                          Заход:{channel.Time.JoinTime.ToString()} 
+                                                          Выход:{channel.Time.LeaveTime.ToString()}
+                                                       ------------------");
                 GlobalVars.DataBase.Upsert(channel);
             }
             Input.ReadString("Press [Enter] to navigate home");

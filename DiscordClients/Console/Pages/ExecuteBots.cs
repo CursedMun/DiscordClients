@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-
-using ConsoleTables;
+﻿using ConsoleTables;
 
 using DiscordClients.Core.SQL.Tables;
 using DiscordClients.Helpers;
@@ -19,11 +12,18 @@ using Newtonsoft.Json;
 using Quartz;
 using Quartz.Impl;
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+
 namespace DiscordClients.Console.Pages
 {
     public class ExecuteBots : Page
     {
-        public static List<ClientManager> ClientManagers;
+        public static List<ClientManager> ClientsManagers;
         public static Dictionary<Time, List<Bot>> Dict;
         private static Program Prog;
         public ExecuteBots(Program program) : base("Вы уверены что хотите запустить ботов?", program)
@@ -43,7 +43,7 @@ namespace DiscordClients.Console.Pages
                 GenerateBots();
             }).Wait();
             var table = new ConsoleTable("Количество Ботов", "Примерное ожидания запуска(секунды)", "Дата");
-            table.AddRow(ClientManagers.Count(), new TimeSpan(0, 0, 0, (int)(ClientManagers.Count() * GlobalVars.JoinDelay.TotalSeconds), 0).TotalSeconds, DateTime.Now);
+            table.AddRow(ClientsManagers.Count(), new TimeSpan(0, 0, 0, (int)(ClientsManagers.Count() * GlobalVars.JoinDelay.TotalSeconds), 0).TotalSeconds, DateTime.Now);
             table.Write(Format.MarkDown);
             Output.WriteLine(ConsoleColor.Green, $"Ожидайте запуск...");
             StartBots();
@@ -60,7 +60,7 @@ namespace DiscordClients.Console.Pages
             try
             {
 
-                ClientManagers = new List<ClientManager>();
+                ClientsManagers = new List<ClientManager>();
                 Dict = new Dictionary<Time, List<Bot>>();
                 var Bots = GlobalVars.DataBase.FindAll<ChannelType>().ToList();
                 //List<BotsJson> Bots = JsonConvert.DeserializeObject<List<BotsJson>>(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Bots.json")));
@@ -79,13 +79,13 @@ namespace DiscordClients.Console.Pages
                             if (EmptyChannel != null)
                                 if ((EmptyChannel.UsersIn < EmptyChannel.UserLimit) || EmptyChannel.UserLimit == 0)
                                 {
-                                    ClientManagers.Add(new ClientManager(new Client(token.Token, GlobalVars.GuildID, EmptyChannel.Id, bot.IsChannel, bot.SpecialChannel)));
+                                    ClientsManagers.Add(new ClientManager(new Client(token.Token, GlobalVars.GuildID, EmptyChannel.Id, bot.IsChannel, bot.SpecialChannel)));
                                     EmptyChannel.UsersIn++;
                                 }
 
                         }
                         else
-                            ClientManagers.Add(new ClientManager(new Client(token.Token, GlobalVars.GuildID, bot.ChannelID, bot.IsChannel, bot.SpecialChannel)));
+                            ClientsManagers.Add(new ClientManager(new Client(token.Token, GlobalVars.GuildID, bot.ChannelID, bot.IsChannel, bot.SpecialChannel)));
 
                     }
                 }
@@ -137,7 +137,8 @@ namespace DiscordClients.Console.Pages
                         var leaveTime = VerifyTime(dic.Key.LeaveTime);
                         var joinTime = VerifyTime(dic.Key.JoinTime);
 
-                        Output.WriteLine(ConsoleColor.Green, $"Channel:{dic.Value.ToArray()}\njoin:{joinTime}\nleave:{leaveTime}");
+
+                        Output.WriteLine(ConsoleColor.Green, $"Channel:{string.Join(',', dic.Value)}\njoin:{joinTime}\nleave:{leaveTime}");
                         //Join trigger
                         ITrigger joinTrigger = TriggerBuilder.Create()
                                                             .StartAt(joinTime)
@@ -160,39 +161,11 @@ namespace DiscordClients.Console.Pages
                         .Build();
                         leaveJob.JobDataMap.Put("LeaveBots", dic);
                         await scheduler.ScheduleJob(leaveJob, leaveTrigger);
-
-                        //var dif = leaveTime.Ticks - DateTime.Now.Ticks;
-
-                        //if (dif >= TimeSpan.TicksPerHour)
-                        //{
-
-
-                        //    ScheduleAction(async () =>
-                        //    {
-                        //        for (int i = 0; i < dic.Value.Count; i++)
-                        //        {
-                        //            var bot = dic.Value.ElementAt(i);
-                        //            var client = ClientManagers.Find(x => x.Client.Token == bot.Token);
-                        //            await Task.Delay(GlobalVars.JoinDelay);
-                        //            client.StartAsync(bot.Token);
-
-                        //        }
-                        //    }, joinTime);
-                        //    ScheduleAction(async () =>
-                        //    {
-                        //        for (int i = 0; i < dic.Value.Count; i++)
-                        //        {
-                        //            var bot = dic.Value.ElementAt(i);
-                        //            var client = ClientManagers.Find(x => x.Client.Token == bot.Token);
-                        //            await Task.Delay(GlobalVars.JoinDelay);
-                        //            client.Disconnect(bot.Token);
-                        //        }
-                        //    }, leaveTime);
-                        //}
                     }
                 }
                 catch (Exception ex)
                 {
+                    Output.WriteLine(ConsoleColor.Red, ex.Message);
                     throw ex;
                 }
             });
@@ -202,8 +175,8 @@ namespace DiscordClients.Console.Pages
         private static DateTime VerifyTime(DateTime dateTime)
         {
             var newDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
-            //newDate = TimeZoneInfo.ConvertTime(newDate, TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time"));
-            return newDate <= DateTime.Now ? newDate.AddDays(1) : newDate;
+            //return newDate <= DateTime.Now ? newDate.AddDays(1) : newDate;
+            return newDate;
         }
     }
 }

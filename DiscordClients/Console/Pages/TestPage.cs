@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DiscordClients.Core.SQL.Tables;
+﻿using DiscordClients.Core.SQL.Tables;
 using DiscordClients.Helpers;
 
 using EasyConsole;
+
+using Newtonsoft.Json;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DiscordClients.Console.Pages
 {
@@ -19,10 +21,19 @@ namespace DiscordClients.Console.Pages
         {
             Prog = program;
         }
-
+        public class mytest
+        {
+            public DateTime blabla { get; set; }
+        }
         private static void Test1()
         {
+            Output.WriteLine(ConsoleColor.Red, DateTime.Now.ToString("F"));
+            Output.WriteLine(ConsoleColor.Red, DateTime.Now.ToString("f"));
+            mytest serialize = JsonConvert.DeserializeObject<mytest>("{blabla:\"01/01/0001 01:57:00 +00:00\"}");
+            Output.WriteLine(ConsoleColor.Red, serialize.blabla.ToString());
             Output.WriteLine(ConsoleColor.Red, DateTime.Now.ToString());
+            Output.WriteLine(ConsoleColor.Red, DateTime.Now.ToString("g"));
+            Output.WriteLine(ConsoleColor.Red, DateTime.Now.ToString("M/d/yyyy HH:mm"));
         }
 
         private static void Test()

@@ -1,84 +1,14 @@
 ﻿[
-  //Numb the pain Channels
-  {
-    "category_id": "854986080410271745",
-    "tokens": [
-      "ODU5NTY3Nzg4Mzg0MTkwNDg1.YNulAw.q80HUFFu1QqPnXROD4iTvHwVmwM",
-      "ODU5NDEwNTAwMjkwMDg0ODk1.YNunrw.GDz67SWXD1FH81zgMa1hO8Tenpw",
-      "ODU5MjA2NzQ2MzcxMTI5MzU1.YNuoQg.BUpGbGtAYR6kx-oV0WlBFBzRY88",
-      "ODU5MjExNjU3ODk3MDUwMTEy.YNuoWg.2I0wEB_BlVII7xu1PJwZ1YkH4oo",
-      "ODU5NTcyNzY3ODU5Mjc3ODI0.YNuphw.yLlWvXxm_fg7-5pZtsi6cVhVUhU"
-    ],
-    "time": {
-      "joinTime": "0001-01-01T20:43:00",
-      "leaveTime": "0001-01-01T22:59:59"
-    }
-  },
   //waisetsu
   {
     "channel_id": "859171048050524160",
     "tokens": [
       "ODM0NTM1NjU3NzQwMTczMzUz.YNoWzQ.4t6uBrT6kBeBdJWjZogNSrFWQTw",
-      "ODMzNzc4MDUwMjA1NzQ1MTcy.YNoWxw.Nmm_bPBhRoQbBqZfD-6iuLe8DC8",
-      "ODE5MzM2ODUyMjc2Mzc5NjUw.YNoWww.t-aigCM-ngia4vKxqsSqPpmGGXo",
-      "ODA3MzU3MzkwMDUxMjEzMzcy.YNoWmQ.dqXdb6E2xkIO5DYvm7Zu01wI13s",
-      "ODAxNTg3OTE1OTE3MzYxMjAy.YNoWfw.VAntZTlmaX1sLK9gaAmUgY0-tRU"
+      "ODMzNzc4MDUwMjA1NzQ1MTcy.YNoWxw.Nmm_bPBhRoQbBqZfD-6iuLe8DC8"
     ],
     "time": {
-      "joinTime": "0001-01-01T22:00:00",
+      "joinTime": "0001-01-01T21:35:00",
       "leaveTime": "0001-01-01T23:59:59"
-    }
-  },
-  //Mod Channels
-  {
-    "category_id": "847860422701744128",
-    "tokens": [
-      "ODU5MjA2NzQ2MzcxMTI5MzU1.YNpXqw.l2KovQL3pFiDSusDEmak9GfzvVE",
-      "ODU5MjExNjU3ODk3MDUwMTEy.YNpZUw.JJowN5J2R3-7uE96JUN7b4odMak",
-      "ODU5NDA2Nzg3MTAyNTA3MDI4.YNsPIg.TCsH75K1RXjPZ9x1aNFzcrtGpkI",
-      "ODU5NDA4Njc4MTg0MTU3MTk1.YNsQ3A.M8EZmYZJYbMQ25BUKwrSjE_9hC8",
-      "ODU5NDA5NDQ0MTgwODUyNzQ2.YNsRjg._LQinb6mrKasFQYM6xUPQS4veck",
-      "ODU5NDEwNTAwMjkwMDg0ODk1.YNsSnw.65VnK5MjwzOdpAS0zAClxx3mzNk"
-    ],
-    "time": {
-      "joinTime": "0001-01-01T11:00:00",
-      "leaveTime": "0001-01-01T13:00:00"
-    }
-  },
-  //Love Channels
-  {
-    "category_id": "8549860804102717451",
-    "tokens": [
-      "ODM3NzUyNTEyNTUwNTM1MjU4.YNo2hA.EXJcpcTZS9VWSYPj4bNivqrJbFk",
-      "ODQwOTU2NTQwNDc0ODg0MTA3.YNo23Q.F3gCEauftTda-D8Op5q5_HdueTI",
-      "ODQ1NzcxNjc0NDM5Mzg1MDk4.YNo3AQ.05cwG9eAeQTyPc6Fk0tD5idu1b0",
-      "ODQ2Mzg4Mjc0MTcxMDg0ODcy.YNo3Sw.Od9-0gQIw9qr3bHJszf3QQJ7Gj8",
-      "ODQ5Nzg3ODE0NzkwODIzOTU2.YNo3sw.WIAGFdTQUuHJnlmJ_9odR9Gmhl4"
-    ],
-    "time": {
-      "joinTime": "0001-01-01T11:00:00",
-      "leaveTime": "0001-01-01T13:00:00"
-    }
-  },
-  //Private Channels
-  {
-    "channel_id": "847891600805068840",
-    "special": true,
-    "tokens": [
-      "ODU5NTc0NTU0MjY2ODI4ODAx.YNuraA.mUQCAzx51SJT-f0UIa8lIKeqA3k",
-      "ODU5NTc5MzMxNDE5MTc2OTgw.YNuvvw.tu3gaSlGsg7nkSxUx-iNlX4DWxk",
-      "ODU5NTc1NDMyNzEzNzMyMDk2.YNusHA.7TcMWzMMV9iS7adVcDyhwxZa6FI",
-      "ODU5NTc2MzAzMjA3NzEwNzYx.YNus7w.YiBjrcVneACKlpLf-IsniXhRSNg",
-      "ODU5NTc2OTA1NzE1Mjg2MDE2.YNutfw.PmyJ2wPAZ_ytM0nvWUlKHs5qKUk",
-      "ODU5NTc3NDQxNzYwMTgyMjk0.YNuuHg.EJg1YvuOkUyURVJ1W3LxjeiKN8U",
-      "ODU5NTc4NDM1MzgxNjI0ODUy.YNuu5Q.9_TvgnlMA5z2A6HSbLExI4yqpbs",
-      "ODU5NTgwMTgxOTYyMDMxMTU0.YNuwvw.lr6JBYa71TWL2NJwlKXY4pJiZlk",
-      "ODU5NTgxMzQ4MDI0NjgwNDQ4.YNuxng.qi0rjfGJvDe5TCr2T6z_YpfPh7w",
-      "ODU5NTgyMzM5NjUwODE0MDAy.YNuyjQ.LBb-Fx2tw279q0FWyhz_cLalj7o"
-    ],
-    "time": {
-      "joinTime": "0001-01-01T11:00:00",
-      "leaveTime": "0001-01-01T13:00:00"
     }
   }
 ]

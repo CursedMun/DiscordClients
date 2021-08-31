@@ -1,21 +1,22 @@
-﻿using System;
-using System.IO;
-using System.Net.WebSockets;
-using System.Reflection;
-using System.Threading.Tasks;
-
-using EasyConsole;
+﻿using EasyConsole;
 
 using Newtonsoft.Json;
 
 using Serilog;
+
+using System;
+using System.IO;
+using System.Net.WebSockets;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Websocket.Client;
 namespace DiscordClients.Helpers
 {
     public class ClientManager
     {
-
+        public ManualResetEvent exitEvent = new ManualResetEvent(false);
         public readonly IWebsocketClient _client;
         public Client Client;
         public ClientManager(Client client)
@@ -44,16 +45,25 @@ namespace DiscordClients.Helpers
             if (Client.Special) return;
             _client.ReconnectionHappened.Subscribe(type =>
                 {
-                    if (!Client.Connected)
-                    {
-                        StartClient();
-                        ConnectClient();
-                    }
+                    StartClient();
+                    ConnectClient();
+                    //if (!Client.Alive)
+                    //{
+
+                    //}
                 });
             _client.DisconnectionHappened.Subscribe(info =>
                {
-                   Client.Alive = false;
-                   System.Console.WriteLine(info);
+                   //Client.Alive = false;
+                   //Client.Restart = true;
+                   //if ((int)info.CloseStatus.Value == 4004)
+                   //{
+                   //    Client.Restart = false;
+                   //    Client.Alive = true;
+                   //    exitEvent.Set();
+                   //    System.Console.WriteLine("Client Removed: " + Client.Token);
+                   //}
+
                });
             _client.MessageReceived.Subscribe(async msg =>
                 {
@@ -74,24 +84,23 @@ namespace DiscordClients.Helpers
                         {
                             await Task.Delay(TimeSpan.FromSeconds(30));
                             ConnectClient();
-                            System.Console.WriteLine(msg.Text);
                         }
                         else if (discordEvent.D.UserId == Client.UserID)
                         {
-                            System.Console.WriteLine(msg.Text);
                         }
                     }
                 });
             _client.Start().Wait();
-            Log.Information($"Started {id}");
+            Output.WriteLine($"запустил {id}");
             StartClient();
             ConnectClient();
+            exitEvent.WaitOne();
         }
-        public async void Disconnect(string id)
+        public void Disconnect(string id)
         {
             DisconnectClient();
-            await Stop();
-            Log.Information($"Disconnected {id}");
+            Stop();
+            Output.WriteLine($"Disconnected {id}");
         }
         public void Heartbeat(int ms)
         {
@@ -100,9 +109,13 @@ namespace DiscordClients.Helpers
             {
                 _client.Send(JsonConvert.SerializeObject(new { op = 1, d = (object)null }));
                 if (Client.Alive)
-                    Log.Information($"HeartBeated {Client.Token}");
+                    Output.WriteLine($"HeartBeated {Client.Token}");
                 else
-                    Log.Information($"Stopped the heartbeat for this user {Client.UserID} | {Client.Token}");
+                {
+                    //Interval.Dispose();
+                    Output.WriteLine($"Stopped the heartbeat for this user {Client.UserID} | {Client.Token}");
+
+                }
             }, ms);
         }
         public async Task SetInterval(Action action, TimeSpan timeout)
@@ -138,7 +151,6 @@ namespace DiscordClients.Helpers
 
         private void ConnectClient()
         {
-            Output.WriteLine(ConsoleColor.Green, $"захожу в канал {Client.ChannelID}");
             var msg = new
             {
                 op = 4,
@@ -153,11 +165,12 @@ namespace DiscordClients.Helpers
 
             _client.Send(JsonConvert.SerializeObject(msg));
             Client.Connected = true;
+            Output.WriteLine(ConsoleColor.Green, $"Зашёл в канал {Client.ChannelID}");
         }
 
         private void DisconnectClient()
         {
-            if (!Client.Connected) Log.Information("Error the client isnt connected to any instance");
+            if (!Client.Connected) Output.WriteLine("Error the client isnt connected to any instance");
             Client.Connected = false;
             var msg = new
             {
@@ -173,11 +186,12 @@ namespace DiscordClients.Helpers
 
             _client.Send(JsonConvert.SerializeObject(msg));
         }
-        public async Task Stop()
+        public void Stop()
         {
             // Logging
             _client.IsReconnectionEnabled = false;
-            await _client.Stop(WebSocketCloseStatus.Empty, string.Empty);
+            _client.Dispose();
+            //await _client.Stop(WebSocketCloseStatus.Empty, string.Empty);
             Client.Connected = false;
             Client.Alive = false;
             Log.Logger.Error($"Closed connexion to WebSocket ");

@@ -95,6 +95,7 @@ namespace DiscordClients.Helpers
             }
         }
         public string Guild { get; private set; }
+        public bool Restart { get; set; } = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
